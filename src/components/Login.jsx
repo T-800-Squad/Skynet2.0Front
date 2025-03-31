@@ -2,17 +2,51 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import logo from '../images/logo.png';
+import BookingService from '../services/BookingService';
 
 const Login = () => {
-    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Reemplaza history.push
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const loginUser = (e) => {
+    const loginUser = async (e) => {
         e.preventDefault();
-        navigate('/home'); // Usa navigate en lugar de history.push
+        setError('');
+    
+        try {
+            console.log("Enviando datos:", { email, password });
+    
+            const response = await BookingService.login({ email, password });
+            console.log("🔍 Respuesta completa del servidor:", response);
+    
+            const { token, name: userName, rol } = response || {}; 
+            console.log("✅ Token recibido:", token);
+    
+            if (token) {
+                BookingService.setToken(token);
+                localStorage.setItem('token', token);
+                localStorage.setItem('userName', userName);
+                localStorage.setItem('rol', rol);
+                console.log("Credenciales guardadas, redirigiendo a /home...");
+    
+                navigate('/home');
+                setTimeout(() => {
+                    if (window.location.pathname !== '/home') {
+                        console.log("Forzando redirección...");
+                        window.location.href = '/home';
+                    }
+                }, 500);
+            } else {
+                console.error("❌ No se recibió token en la respuesta");
+                setError('Error de autenticación. Inténtalo de nuevo.');
+            }
+        } catch (err) {
+            console.error("⚠️ Error en login:", err.response?.data || err.message);
+            setError('Credenciales incorrectas. Inténtalo de nuevo.');
+        }
     };
-
+    
     return (
         <div className="container">
             <div className="row justify-content-center">
@@ -20,15 +54,16 @@ const Login = () => {
                     <img src={logo} alt="Logo" />
                     <h3>Login</h3>
                     <div className="card-body">
-                        <form>
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        <form onSubmit={loginUser}>
                             <div className="form-group">
-                                <label>Name:</label>
+                                <label>Email:</label>
                                 <input
-                                    type="text"
-                                    placeholder="Name"
+                                    type="email"
+                                    placeholder="Email"
                                     className="form-control"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="form-group mt-2">
@@ -41,7 +76,7 @@ const Login = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
-                            <button className="btn btn-success" onClick={loginUser}>
+                            <button type="submit" className="btn btn-success">
                                 Login
                             </button>
                         </form>

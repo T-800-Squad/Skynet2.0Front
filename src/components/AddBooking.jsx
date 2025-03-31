@@ -31,7 +31,7 @@ const AddBooking = () => {
     const bookingDTO = {
       userName: "John Doe",
       labName,
-      date: formattedDate
+      date: formattedDate,
     };
 
     try {

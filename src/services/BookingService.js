@@ -1,40 +1,61 @@
+// BookingService.js
 import axios from 'axios';
 
-const USER_API_BASE_URL = "http://localhost:8080/";
+const USER_API_BASE_URL = "http://localhost:8443/";
 
 class BookingService {
+    constructor() {
+        this.api = axios.create({ baseURL: USER_API_BASE_URL });
 
-    getBookingByUser() {
-        return axios.get(USER_API_BASE_URL + 'query?userName=John Doe')
-            .then(res => {return res.data || []; })
-            
-    }
-    
-    getUsers(){
-        return axios.get(USER_API_BASE_URL);
-    }
+        // Interceptor para incluir el token en cada solicitud
+        this.api.interceptors.request.use(config => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
 
-    createBooking(createBookingDTO) {
-        return axios.post(USER_API_BASE_URL + 'booking', createBookingDTO);
-    }
-    
+            // 🔍 Log detallado antes de cada solicitud
+            console.log("📡 Preparando solicitud:");
+            console.log("🔗 Método:", config.method.toUpperCase());
+            console.log("🔗 URL:", config.baseURL + config.url);
+            console.log("📜 Headers:", config.headers);
+            if (config.data) console.log("📦 Payload:", config.data);
 
-    getLaboratoryByDate(date){
-        return axios.get(USER_API_BASE_URL + 'query/lab?date=' + date);
-    }
-
-    updateUser(user, userId){
-        return axios.put(USER_API_BASE_URL + '/' + userId, user);
-    }
-
-    deleteBooking(deleteDTO) {
-        console.log("Enviando DELETE con payload:", deleteDTO);
-        return axios.delete(USER_API_BASE_URL + 'booking', { 
-            headers: { "Content-Type": "application/json" },
-            data: deleteDTO 
+            return config;
+        }, error => {
+            console.error("❌ Error en el interceptor:", error);
+            return Promise.reject(error);
         });
     }
 
+    setToken(token) {
+        localStorage.setItem('token', token);
+    }
+
+    login(credentials) {
+        return this.api.post('login', credentials, {
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => res.data);
+    }
+
+    getBookingByUser() {
+        return this.api.get('query?userName=John Doe').then(res => res.data || []);
+    }
+
+    createBooking(createBookingDTO) {
+        return this.api.post('booking', createBookingDTO);
+    }
+
+    getLaboratoryByDate(date) {
+        return this.api.get(`query/lab?date=${encodeURIComponent(date)}`);
+    }
+
+    deleteBooking(deleteDTO) {
+        return this.api.delete('booking', {
+            headers: { "Content-Type": "application/json" },
+            data: deleteDTO
+        });
+    }
 }
 
-export default new BookingService()
+export default new BookingService();
