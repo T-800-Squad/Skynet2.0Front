@@ -20,7 +20,7 @@ class MyBookings extends Component {
     
 
     deleteUser = async (id) => {
-        let deleteDTO = { userName: "John Doe", bookingId: id };
+        let deleteDTO = { userName: localStorage.getItem("userName"), bookingId: id };
         console.log("Intentando eliminar booking:", deleteDTO);
     
         try {

@@ -25,7 +25,6 @@ const Login = () => {
     
             if (token) {
                 BookingService.setToken(token);
-                localStorage.setItem('token', token);
                 localStorage.setItem('userName', userName);
                 localStorage.setItem('rol', rol);
                 console.log("Credenciales guardadas, redirigiendo a /home...");

@@ -1,7 +1,7 @@
 // BookingService.js
 import axios from 'axios';
 
-const USER_API_BASE_URL = "http://localhost:8443/";
+const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
 
 class BookingService {
     constructor() {
@@ -10,9 +10,13 @@ class BookingService {
         // Interceptor para incluir el token en cada solicitud
         this.api.interceptors.request.use(config => {
             const token = localStorage.getItem('token');
+            
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
+                config.headers['Content-Type'] = 'application/json';
+                console.log(token);
             }
+            
 
             // 🔍 Log detallado antes de cada solicitud
             console.log("📡 Preparando solicitud:");
@@ -39,7 +43,7 @@ class BookingService {
     }
 
     getBookingByUser() {
-        return this.api.get('query?userName=John Doe').then(res => res.data || []);
+        return this.api.get('query?userName='+localStorage.getItem("userName")).then(res => res.data || []);
     }
 
     createBooking(createBookingDTO) {
@@ -47,7 +51,7 @@ class BookingService {
     }
 
     getLaboratoryByDate(date) {
-        return this.api.get(`query/lab?date=${encodeURIComponent(date)}`);
+        return this.api.get('query/lab?date='+date);
     }
 
     deleteBooking(deleteDTO) {

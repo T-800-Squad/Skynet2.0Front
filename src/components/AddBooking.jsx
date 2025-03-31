@@ -29,7 +29,7 @@ const AddBooking = () => {
 
   const reserveLab = async (labName) => {
     const bookingDTO = {
-      userName: "John Doe",
+      userName: localStorage.getItem("userName"),
       labName,
       date: formattedDate,
     };
