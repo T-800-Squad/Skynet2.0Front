@@ -1,7 +1,7 @@
 // BookingService.js
 import axios from 'axios';
 
-const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
+const USER_API_BASE_URL = "http://localhost:8443/";
 
 class BookingService {
     constructor() {
