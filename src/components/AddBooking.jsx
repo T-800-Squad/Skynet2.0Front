@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/AddBooking.css";
@@ -12,7 +12,15 @@ const availableTimes = [
 const AddBooking = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(availableTimes[0]);
+  const [selectedPriority, setSelectedPriority] = useState(0);
   const [availableLabs, setAvailableLabs] = useState([]);
+  const [customUser, setCustomUser] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const role = localStorage.getItem("rol");
+    setIsAdmin(role === "Admin");
+  }, []);
 
   const formattedDate = `${selectedDate.getFullYear()}-${
     (selectedDate.getMonth() + 1).toString().padStart(2, "0")
@@ -28,10 +36,13 @@ const AddBooking = () => {
   };
 
   const reserveLab = async (labName) => {
+    const userName = customUser.trim() !== "" ? customUser : localStorage.getItem("userName");
     const bookingDTO = {
-      userName: localStorage.getItem("userName"),
+      bookingId: null,
       labName,
       date: formattedDate,
+      priority: selectedPriority,
+      userName,
     };
 
     try {
@@ -48,6 +59,20 @@ const AddBooking = () => {
       <div className="rounded-box">
         <h2 className="text-center">Add Booking</h2>
         <div className="booking-content">
+
+        {isAdmin && (
+            <>
+              <label>Enter Username (optional):</label>
+              <input
+                type="text"
+                placeholder="Enter username"
+                value={customUser}
+                onChange={(e) => setCustomUser(e.target.value)}
+                className="form-control"
+              />
+            </>
+          )}
+
           <label>Select Date:</label>
           <DatePicker selected={selectedDate} onChange={setSelectedDate} inline />
           
@@ -55,6 +80,13 @@ const AddBooking = () => {
           <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
             {availableTimes.map((time) => (
               <option key={time} value={time}>{time}</option>
+            ))}
+          </select>
+          
+          <label>Select Priority:</label>
+          <select value={selectedPriority} onChange={(e) => setSelectedPriority(Number(e.target.value))}>
+            {[0, 1, 2, 3, 4, 5].map((priority) => (
+              <option key={priority} value={priority}>{priority}</option>
             ))}
           </select>
           

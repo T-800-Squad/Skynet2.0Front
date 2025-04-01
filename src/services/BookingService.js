@@ -1,7 +1,11 @@
-// BookingService.js
 import axios from 'axios';
 
+<<<<<<< HEAD
 const USER_API_BASE_URL = "http://localhost:8443/";
+=======
+//const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
+const USER_API_BASE_URL = "http://localhost:8443"
+>>>>>>> 0dc2c34274afcb9124dda7b8eb7c4efeafd39e03
 
 class BookingService {
     constructor() {
@@ -46,6 +50,10 @@ class BookingService {
         return this.api.get('query?userName='+localStorage.getItem("userName")).then(res => res.data || []);
     }
 
+    getBookingByAdmin(user) {
+        return this.api.get('query?userName='+user).then(res => res.data || []);
+    }
+
     createBooking(createBookingDTO) {
         return this.api.post('booking', createBookingDTO);
     }
@@ -60,6 +68,23 @@ class BookingService {
             data: deleteDTO
         });
     }
+
+    createUser(createUserDTO){
+        return this.api.post('admin/user', createUserDTO);
+    }
+
+    deleteUser(user){
+        return this.api.delete('admin/user?userName='+user);
+    }
+
+    createLaboratory(laboratory){
+        return this.api.post('admin/lab?labName='+ laboratory);
+    }
+
+    deleteLaboratory(laboratory){
+        return this.api.delete('admin/lab?labName='+ laboratory);
+    }
+
 }
 
 export default new BookingService();
