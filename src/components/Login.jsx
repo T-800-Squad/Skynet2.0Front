@@ -13,38 +13,40 @@ const Login = () => {
     const loginUser = async (e) => {
         e.preventDefault();
         setError('');
-    
+        
         try {
             console.log("Enviando datos:", { email, password });
     
             const response = await BookingService.login({ email, password });
+            if (!response || !response.token) {
+                setError('Error de autenticación. Inténtalo de nuevo.');
+                return;
+            }
+    
             console.log("🔍 Respuesta completa del servidor:", response);
     
-            const { token, name: userName, rol } = response || {}; 
+            const { token, name: userName, rol } = response;
             console.log("✅ Token recibido:", token);
     
-            if (token) {
-                BookingService.setToken(token);
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('rol', rol);
-                console.log("Credenciales guardadas, redirigiendo a /home...");
+            BookingService.setToken(token);
+            localStorage.setItem('userName', userName);
+            localStorage.setItem('rol', rol);
     
-                navigate('/home');
-                setTimeout(() => {
-                    if (window.location.pathname !== '/home') {
-                        console.log("Forzando redirección...");
-                        window.location.href = '/home';
-                    }
-                }, 500);
+            console.log("Credenciales guardadas, redirigiendo...");
+            
+            // Redirige dependiendo del rol
+            if (rol === 'Admin') {
+                navigate('/AHome'); // Redirige a Admin Home
             } else {
-                console.error("❌ No se recibió token en la respuesta");
-                setError('Error de autenticación. Inténtalo de nuevo.');
+                navigate('/home'); // Redirige a Home si el rol es 'User'
             }
+            
         } catch (err) {
             console.error("⚠️ Error en login:", err.response?.data || err.message);
             setError('Credenciales incorrectas. Inténtalo de nuevo.');
         }
     };
+    
     
     return (
         <div className="container">

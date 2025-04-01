@@ -19,7 +19,7 @@ class MyBookings extends Component {
     }
     
 
-    deleteUser = async (id) => {
+    deleteBooking = async (id) => {
         let deleteDTO = { userName: localStorage.getItem("userName"), bookingId: id };
         console.log("Intentando eliminar booking:", deleteDTO);
     
@@ -63,7 +63,7 @@ class MyBookings extends Component {
                                         <td>{booking.date}</td>
                                         <td>
                                             <div className="button-group">
-                                                <button onClick={() => this.deleteUser(booking.bookingId)} className="btn btn-success btn-sm">Delete</button>
+                                                <button onClick={() => this.deleteBooking(booking.bookingId)} className="btn btn-success btn-sm">Delete</button>
                                             </div>
                                         </td>
                                     </tr>

@@ -5,8 +5,11 @@ import './App.css';
 import HeaderComponent from './components/HeaderComponent';
 import MyBookings from './components/MyBookings';
 import Home from './components/Home';
+import AHome from './components/AHome';
 import Login from './components/Login';
 import AddBooking from './components/AddBooking';
+import UsersManager from './components/UsersManager';
+import LaboratoriesManager from './components/LaboratoriesManager';
 
 function App() {
   return (
@@ -19,7 +22,10 @@ function App() {
             <Route path="/" element={<Login/>} />
             <Route path="/login" element={<Login/>} />
             <Route path="/home" element={<Home/>} /> 
+            <Route path="/Ahome" element={<AHome/>} /> 
             <Route path="/booking" element={<AddBooking/>} /> 
+            <Route path="/usersManager" element={<UsersManager/>} /> 
+            <Route path="/laboratoriesManager" element={<LaboratoriesManager/>} /> 
           </Routes>
         </div>
       </Router>

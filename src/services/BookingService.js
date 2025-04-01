@@ -1,7 +1,7 @@
-// BookingService.js
 import axios from 'axios';
 
-const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
+//const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
+const USER_API_BASE_URL = "http://localhost:8443"
 
 class BookingService {
     constructor() {
@@ -60,6 +60,23 @@ class BookingService {
             data: deleteDTO
         });
     }
+
+    createUser(createUserDTO){
+        return this.api.post('admin/user', createUserDTO);
+    }
+
+    deleteUser(user){
+        return this.api.delete('admin/user?userName='+user);
+    }
+
+    createLaboratory(laboratory){
+        return this.api.post('admin/lab?labName='+ laboratory);
+    }
+
+    deleteLaboratory(laboratory){
+        return this.api.delete('admin/lab?labName='+ laboratory);
+    }
+
 }
 
 export default new BookingService();
