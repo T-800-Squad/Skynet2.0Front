@@ -46,6 +46,10 @@ class BookingService {
         return this.api.get('query?userName='+localStorage.getItem("userName")).then(res => res.data || []);
     }
 
+    getBookingByAdmin(user) {
+        return this.api.get('query?userName='+user).then(res => res.data || []);
+    }
+
     createBooking(createBookingDTO) {
         return this.api.post('booking', createBookingDTO);
     }
