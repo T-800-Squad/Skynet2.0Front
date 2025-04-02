@@ -71,4 +71,5 @@ jobs:
           app-name: 'SkyWebNet'
           slot-name: 'Production'
           package: .
+          deployment_action: "upload"
           
