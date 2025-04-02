@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - SkyWeb
+name: Build and deploy ASP app to Azure Web App - SkyWeb
 
 on:
   push:
@@ -11,34 +11,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
       contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.x'
+      - name: Setup MSBuild path
+        uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Restore NuGet packages
+        run: nuget restore
+
+      - name: Publish to folder
+        run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: release.zip
+          name: ASP-app
+          path: '/published/**'
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
@@ -51,19 +50,16 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
+          name: ASP-app
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_25AC9C108ACA420890F8AC3F1E9FC0FE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2DEA890CB996426CA6CD17B27406D90C }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F756993C398B4FF2A6A8EB07CC4C4843 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4D5FFF9B231D43B2AA1263727375105A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_94745AB420C246C0A17E72FCA84C4BF4 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D69FA323888B4F4CB725DC387B36D535 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
