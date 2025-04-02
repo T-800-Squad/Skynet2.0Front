@@ -1,59 +1,59 @@
 import React, { useState } from 'react';
-import BookingService from '../services/BookingService'; // Asegúrate de que la ruta sea correcta
-import '../styles/Login.css'; // Importa el CSS existente
+import BookingService from '../services/BookingService'; 
+import '../styles/Login.css'; 
 
 const UsersManager = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [role, setRole] = useState('');
-    const [errorCreate, setErrorCreate] = useState('');
-    const [successCreate, setSuccessCreate] = useState('');
-    const [errorDelete, setErrorDelete] = useState('');
-    const [successDelete, setSuccessDelete] = useState('');
-    const [userToDelete, setUserToDelete] = useState('');
-    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [usuario, setUsuario] = useState('');
+    const [contraseña, setContraseña] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [rol, setRol] = useState('');
+    const [errorCrear, setErrorCrear] = useState('');
+    const [exitoCrear, setExitoCrear] = useState('');
+    const [errorEliminar, setErrorEliminar] = useState('');
+    const [exitoEliminar, setExitoEliminar] = useState('');
+    const [usuarioEliminar, setUsuarioEliminar] = useState('');
+    const [confirmarEliminar, setConfirmarEliminar] = useState(false);
 
-    const handleSubmit = async (e) => {
+    const handleCrearUsuario = async (e) => {
         e.preventDefault();
-        setErrorCreate('');
-        setSuccessCreate('');
+        setErrorCrear('');
+        setExitoCrear('');
 
-        const createUserDTO = {
-            username,
-            password,
-            email,
-            role
+        const nuevoUsuario = {
+            username: usuario,
+            password: contraseña,
+            email: correo,
+            role: rol
         };
 
         try {
-            await BookingService.createUser(createUserDTO);
-            setSuccessCreate('Usuario creado exitosamente');
-            setUsername('');
-            setPassword('');
-            setEmail('');
-            setRole('');
+            await BookingService.createUser(nuevoUsuario);
+            setExitoCrear('Usuario creado exitosamente');
+            setUsuario('');
+            setContraseña('');
+            setCorreo('');
+            setRol('');
         } catch (err) {
-            setErrorCreate('Error al crear el usuario: ' + err.message);
+            setErrorCrear('Error al crear el usuario: ' + err.message);
         }
     };
 
-    const handleDeleteUser = async (e) => {
+    const handleEliminarUsuario = async (e) => {
         e.preventDefault();
-        setErrorDelete('');
-        setSuccessDelete('');
+        setErrorEliminar('');
+        setExitoEliminar('');
 
-        if (confirmDelete) {
+        if (confirmarEliminar) {
             try {
-                await BookingService.deleteUser(userToDelete); // Ahora usamos el método correcto
-                setSuccessDelete('Usuario eliminado exitosamente');
-                setUserToDelete('');
-                setConfirmDelete(false);
+                await BookingService.deleteUser(usuarioEliminar);
+                setExitoEliminar('Usuario eliminado exitosamente');
+                setUsuarioEliminar('');
+                setConfirmarEliminar(false);
             } catch (err) {
-                setErrorDelete('Error al eliminar el usuario: ' + err.message);
+                setErrorEliminar('Error al eliminar el usuario: ' + err.message);
             }
         } else {
-            setConfirmDelete(true);
+            setConfirmarEliminar(true);
         }
     };
 
@@ -63,50 +63,50 @@ const UsersManager = () => {
                 <div className="card col-md-6">
                     <h3>Crear Usuario</h3>
                     <div className="card-body">
-                        {errorCreate && <div className="alert alert-danger">{errorCreate}</div>}
-                        {successCreate && <div className="alert alert-success">{successCreate}</div>}
-                        <form onSubmit={handleSubmit}>
+                        {errorCrear && <div className="alert alert-danger">{errorCrear}</div>}
+                        {exitoCrear && <div className="alert alert-success">{exitoCrear}</div>}
+                        <form onSubmit={handleCrearUsuario}>
                             <div className="form-group">
-                                <label>Username:</label>
+                                <label>Usuario:</label>
                                 <input
                                     type="text"
-                                    placeholder="Username"
+                                    placeholder="Nombre de usuario"
                                     className="form-control"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    value={usuario}
+                                    onChange={(e) => setUsuario(e.target.value)}
                                     required
                                 />
                             </div>
                             <div className="form-group mt-2">
-                                <label>Password:</label>
+                                <label>Contraseña:</label>
                                 <input
                                     type="password"
-                                    placeholder="Password"
+                                    placeholder="Contraseña"
                                     className="form-control"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={contraseña}
+                                    onChange={(e) => setContraseña(e.target.value)}
                                     required
                                 />
                             </div>
                             <div className="form-group mt-2">
-                                <label>Email:</label>
+                                <label>Correo Electrónico:</label>
                                 <input
                                     type="email"
-                                    placeholder="Email"
+                                    placeholder="Correo electrónico"
                                     className="form-control"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={correo}
+                                    onChange={(e) => setCorreo(e.target.value)}
                                     required
                                 />
                             </div>
                             <div className="form-group mt-2">
-                                <label>Role:</label>
+                                <label>Rol:</label>
                                 <input
                                     type="text"
-                                    placeholder="Role"
+                                    placeholder="Rol"
                                     className="form-control"
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
+                                    value={rol}
+                                    onChange={(e) => setRol(e.target.value)}
                                     required
                                 />
                             </div>
@@ -118,27 +118,26 @@ const UsersManager = () => {
                 </div>
             </div>
 
-            {/* Nueva fila para la sección de eliminar usuario */}
             <div className="row justify-content-center mt-4">
                 <div className="card col-md-6">
                     <h3>Eliminar Usuario</h3>
                     <div className="card-body">
-                        {errorDelete && <div className="alert alert-danger">{errorDelete}</div>}
-                        {successDelete && <div className="alert alert-success">{successDelete}</div>}
-                        <form onSubmit={handleDeleteUser}>
+                        {errorEliminar && <div className="alert alert-danger">{errorEliminar}</div>}
+                        {exitoEliminar && <div className="alert alert-success">{exitoEliminar}</div>}
+                        <form onSubmit={handleEliminarUsuario}>
                             <div className="form-group">
                                 <label>Nombre de Usuario:</label>
                                 <input
                                     type="text"
-                                    placeholder="Nombre de Usuario"
+                                    placeholder="Nombre de usuario"
                                     className="form-control"
-                                    value={userToDelete}
-                                    onChange={(e) => setUserToDelete(e.target.value)}
+                                    value={usuarioEliminar}
+                                    onChange={(e) => setUsuarioEliminar(e.target.value)}
                                     required
                                 />
                             </div>
                             <button type="submit" className="btn btn-success">
-                                {confirmDelete ? '¿Estás seguro? Haz clic en eliminar de nuevo' : 'Eliminar Usuario'}
+                                {confirmarEliminar ? '¿Estás seguro? Haz clic en eliminar de nuevo' : 'Eliminar Usuario'}
                             </button>
                         </form>
                     </div>

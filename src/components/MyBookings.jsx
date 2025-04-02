@@ -25,19 +25,22 @@ class MyBookings extends Component {
                 : await BookingService.getBookingByUser();
             this.setState({ bookings: response || [] });
         } catch (error) {
-            console.error("Error fetching bookings:", error);
+            console.error("Error al obtener las reservas:", error);
         }
     };
 
     deleteBooking = async (id) => {
-        let deleteDTO = { userName: localStorage.getItem("userName"), bookingId: id };
+        const userName = this.state.customUser.trim() !== "" ? this.state.customUser : localStorage.getItem("userName");
+        let deleteDTO = { userName, bookingId: id };
+    
         try {
             await BookingService.deleteBooking(deleteDTO);
             this.setState((prevState) => ({ bookings: prevState.bookings.filter(booking => booking.bookingId !== id) }));
         } catch (error) {
-            console.error("Error eliminando booking:", error);
+            console.error("Error eliminando la reserva:", error);
         }
     };
+    
 
     handleUserChange = (e) => {
         this.setState({ customUser: e.target.value });
@@ -46,31 +49,31 @@ class MyBookings extends Component {
     render() {
         return (
             <div className="my-bookings-container">
-                <h2 className="text-center">My Bookings</h2>
+                <h2 className="text-center">Mis Reservas</h2>
                 {this.state.isAdmin && (
                     <div>
-                        <label>Enter Username (optional):</label>
+                        <label>Ingrese nombre de usuario (opcional):</label>
                         <input
                             type="text"
-                            placeholder="Enter username"
+                            placeholder="Ingrese el nombre de usuario"
                             value={this.state.customUser}
                             onChange={this.handleUserChange}
                             className="form-control"
                         />
-                        <button className="btn btn-success mt-2" onClick={this.fetchBookings}>Fetch Bookings</button>
+                        <button className="btn btn-success mt-2" onClick={this.fetchBookings}>Obtener Reservas</button>
                     </div>
                 )}
                 {this.state.bookings.length === 0 ? (
-                    <p>No bookings available.</p>
+                    <p>No hay reservas disponibles.</p>
                 ) : (
                     <div className="row">
                         <table className="table table-striped table-bordered mt-4">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Laboratory Name</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
+                                    <th>Nombre del Laboratorio</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,7 +84,7 @@ class MyBookings extends Component {
                                         <td>{booking.date}</td>
                                         <td>
                                             <div className="button-group">
-                                                <button onClick={() => this.deleteBooking(booking.bookingId)} className="btn btn-success btn-sm">Delete</button>
+                                                <button onClick={() => this.deleteBooking(booking.bookingId)} className="btn btn-success btn-sm">Eliminar</button>
                                             </div>
                                         </td>
                                     </tr>

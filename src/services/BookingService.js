@@ -18,10 +18,6 @@ class BookingService {
                 config.headers['Content-Type'] = 'application/json';
                 console.log(token);
             }
-            
-
-            
-        
 
             return config;
         }, error => {

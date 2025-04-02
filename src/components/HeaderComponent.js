@@ -1,25 +1,13 @@
-import React, { Component } from 'react'
-import'bootstrap/dist/css/bootstrap.min.css';
-class HeaderComponent extends Component {
-    constructor(props) {
-        super(props)
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-        this.state = {
-                 
-        }
-    }
+const HeaderComponent = () => (
+    <nav className="navbar navbar-dark bg-success fixed-top px-3 py-0">
+        <a href="/home" className="navbar-brand">LabTools</a>
+        <button className="btn btn-outline-light text-white btn-sm" onClick={() => window.location.href = "/login"}>
+            Cerrar sesión
+        </button>
+    </nav>
+);
 
-    render() {
-        return (
-            <div>
-                <header>
-                    <nav className="navbar navbar-dark bg-success">
-                    <div><a href="/login" className="navbar-brand ms-2">LabTools</a></div>
-                    </nav>
-                </header>
-            </div>
-        )
-    }
-}
-
-export default HeaderComponent
+export default HeaderComponent;

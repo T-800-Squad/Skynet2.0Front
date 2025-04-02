@@ -91,7 +91,7 @@ const LaboratoriesManager = () => {
                                     required
                                 />
                             </div>
-                            <button type="submit" className="btn btn-danger">
+                            <button type="submit" className="btn btn-success">
                                 {confirmDelete ? '¿Seguro? Haz clic nuevamente para eliminar' : 'Eliminar laboratorio'}
                             </button>
                         </form>
