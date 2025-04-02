@@ -63,7 +63,7 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E5484F5DE4C840419740145DF83E1E25 }}
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v1
         with:
           app-name: 'SkyWebNet'
           slot-name: 'Production'
