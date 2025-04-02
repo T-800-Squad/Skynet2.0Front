@@ -65,11 +65,9 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E5484F5DE4C840419740145DF83E1E25 }}
 
       - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: Azure/static-web-apps-deploy@v1
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'SkyWebNet'
           slot-name: 'Production'
           package: .
-          deployment_action: "upload"
           
