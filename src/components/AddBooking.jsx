@@ -31,7 +31,7 @@ const AddBooking = () => {
       const response = await BookingService.getLaboratoryByDate(formattedDate);
       setAvailableLabs(response.data || []);
     } catch (error) {
-      console.error("Error fetching available labs:", error);
+      console.error("Error al obtener laboratorios disponibles:", error);
     }
   };
 
@@ -47,25 +47,25 @@ const AddBooking = () => {
 
     try {
       await BookingService.createBooking(bookingDTO);
-      alert("Booking created successfully!");
+      alert("¡Reserva creada con éxito!");
       setAvailableLabs(prevLabs => prevLabs.filter(lab => lab !== labName));
     } catch (error) {
-      console.error("Error creating booking:", error);
+      console.error("Error al crear la reserva:", error);
     }
   };
 
   return (
     <div className="centered-container">
       <div className="rounded-box">
-        <h2 className="text-center">Add Booking</h2>
+        <h2 className="text-center">Agregar Reserva</h2>
         <div className="booking-content">
 
-        {isAdmin && (
+          {isAdmin && (
             <>
-              <label>Enter Username (optional):</label>
+              <label>Ingresar nombre de usuario (opcional):</label>
               <input
                 type="text"
-                placeholder="Enter username"
+                placeholder="Ingrese el nombre de usuario"
                 value={customUser}
                 onChange={(e) => setCustomUser(e.target.value)}
                 className="form-control"
@@ -73,34 +73,36 @@ const AddBooking = () => {
             </>
           )}
 
-          <label>Select Date:</label>
+          <label>Seleccionar Fecha:</label>
           <DatePicker selected={selectedDate} onChange={setSelectedDate} inline />
           
-          <label>Choose Time:</label>
+          <label>Seleccionar Hora:</label>
           <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
             {availableTimes.map((time) => (
               <option key={time} value={time}>{time}</option>
             ))}
           </select>
           
-          <label>Select Priority:</label>
+          <label>Seleccionar Prioridad:</label>
           <select value={selectedPriority} onChange={(e) => setSelectedPriority(Number(e.target.value))}>
             {[0, 1, 2, 3, 4, 5].map((priority) => (
               <option key={priority} value={priority}>{priority}</option>
             ))}
           </select>
           
-          <button className="btn btn-success check-availability-btn" onClick={fetchAvailableLabs}>Check Availability</button>
+          <button className="btn btn-success check-availability-btn" onClick={fetchAvailableLabs}>
+            Verificar Disponibilidad
+          </button>
         </div>
 
         {availableLabs.length > 0 && (
           <div className="table-container">
-            <h3>Available Labs</h3>
+            <h3>Laboratorios Disponibles</h3>
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Lab Name</th>
-                  <th>Actions</th>
+                  <th>Nombre del Laboratorio</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -108,7 +110,7 @@ const AddBooking = () => {
                   <tr key={index}>
                     <td>{lab}</td>
                     <td>
-                      <button className="btn btn-success" onClick={() => reserveLab(lab)}>Reserve</button>
+                      <button className="btn btn-success" onClick={() => reserveLab(lab)}>Reservar</button>
                     </td>
                   </tr>
                 ))}

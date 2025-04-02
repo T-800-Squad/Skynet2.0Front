@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import BookingService from '../services/BookingService'; // Asegúrate de que la ruta sea correcta
-import '../styles/Login.css'; // Importa el CSS existente
+import BookingService from '../services/BookingService';
+import '../styles/Login.css';
 
 const LaboratoriesManager = () => {
     const [labName, setLabName] = useState('');
@@ -18,10 +18,10 @@ const LaboratoriesManager = () => {
 
         try {
             await BookingService.createLaboratory(labName);
-            setSuccessCreate('Laboratorio creado exitosamente');
+            setSuccessCreate('El laboratorio se creó correctamente.');
             setLabName('');
         } catch (err) {
-            setErrorCreate('Error al crear el laboratorio: ' + err.message);
+            setErrorCreate('Hubo un error al crear el laboratorio: ' + err.message);
         }
     };
 
@@ -33,11 +33,11 @@ const LaboratoriesManager = () => {
         if (confirmDelete) {
             try {
                 await BookingService.deleteLaboratory(labToDelete);
-                setSuccessDelete('Laboratorio eliminado exitosamente');
+                setSuccessDelete('El laboratorio se eliminó correctamente.');
                 setLabToDelete('');
                 setConfirmDelete(false);
             } catch (err) {
-                setErrorDelete('Error al eliminar el laboratorio: ' + err.message);
+                setErrorDelete('Hubo un error al eliminar el laboratorio: ' + err.message);
             }
         } else {
             setConfirmDelete(true);
@@ -54,10 +54,10 @@ const LaboratoriesManager = () => {
                         {successCreate && <div className="alert alert-success">{successCreate}</div>}
                         <form onSubmit={handleCreateLab}>
                             <div className="form-group">
-                                <label>Nombre del Laboratorio:</label>
+                                <label>Nombre del laboratorio:</label>
                                 <input
                                     type="text"
-                                    placeholder="Nombre del Laboratorio"
+                                    placeholder="Ingrese el nombre del laboratorio"
                                     className="form-control"
                                     value={labName}
                                     onChange={(e) => setLabName(e.target.value)}
@@ -65,14 +65,14 @@ const LaboratoriesManager = () => {
                                 />
                             </div>
                             <button type="submit" className="btn btn-success">
-                                Crear Laboratorio
+                                Crear laboratorio
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            {/* Nueva fila para la sección de eliminar laboratorio */}
+            {/* Sección para eliminar laboratorio */}
             <div className="row justify-content-center mt-4">
                 <div className="card col-md-6">
                     <h3>Eliminar Laboratorio</h3>
@@ -81,18 +81,18 @@ const LaboratoriesManager = () => {
                         {successDelete && <div className="alert alert-success">{successDelete}</div>}
                         <form onSubmit={handleDeleteLab}>
                             <div className="form-group">
-                                <label>Nombre del Laboratorio:</label>
+                                <label>Nombre del laboratorio:</label>
                                 <input
                                     type="text"
-                                    placeholder="Nombre del Laboratorio"
+                                    placeholder="Ingrese el nombre del laboratorio"
                                     className="form-control"
                                     value={labToDelete}
                                     onChange={(e) => setLabToDelete(e.target.value)}
                                     required
                                 />
                             </div>
-                            <button type="submit" className="btn btn-success">
-                                {confirmDelete ? '¿Estás seguro? Haz clic en eliminar de nuevo' : 'Eliminar Laboratorio'}
+                            <button type="submit" className="btn btn-danger">
+                                {confirmDelete ? '¿Seguro? Haz clic nuevamente para eliminar' : 'Eliminar laboratorio'}
                             </button>
                         </form>
                     </div>
