@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-//const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
-const USER_API_BASE_URL = "http://localhost:8443"
+
+const USER_API_BASE_URL = "https://skynet-bqhme5gheecnexcj.eastus-01.azurewebsites.net/";
+//const USER_API_BASE_URL = "http://localhost:8443"
+
 
 class BookingService {
     constructor() {
@@ -18,12 +20,8 @@ class BookingService {
             }
             
 
-            // 🔍 Log detallado antes de cada solicitud
-            console.log("📡 Preparando solicitud:");
-            console.log("🔗 Método:", config.method.toUpperCase());
-            console.log("🔗 URL:", config.baseURL + config.url);
-            console.log("📜 Headers:", config.headers);
-            if (config.data) console.log("📦 Payload:", config.data);
+            
+        
 
             return config;
         }, error => {
@@ -83,4 +81,5 @@ class BookingService {
 
 }
 
-export default new BookingService();
+const bookingService = new BookingService();
+export default bookingService;
