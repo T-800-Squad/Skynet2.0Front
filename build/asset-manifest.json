@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.09aed448.css",
+    "main.js": "/static/js/main.c1a82c18.js",
+    "static/js/453.8c9c1a8c.chunk.js": "/static/js/453.8c9c1a8c.chunk.js",
+    "static/media/booking-icon.jpg": "/static/media/booking-icon.05b671d4494ae4eb4332.jpg",
+    "static/media/iconLaboratory.png": "/static/media/iconLaboratory.3022eb62ef4006572058.png",
+    "static/media/iconPerson.jpg": "/static/media/iconPerson.4136dae011d88d523382.jpg",
+    "index.html": "/index.html",
+    "main.09aed448.css.map": "/static/css/main.09aed448.css.map",
+    "main.c1a82c18.js.map": "/static/js/main.c1a82c18.js.map",
+    "453.8c9c1a8c.chunk.js.map": "/static/js/453.8c9c1a8c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.09aed448.css",
+    "static/js/main.c1a82c18.js"
+  ]
+}
